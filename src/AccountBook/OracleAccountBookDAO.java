@@ -7,118 +7,136 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OracleAccountBookDAO implements AccountBookDAO{
-	
-	Connection conn;
-	private int i = 1;
-	public OracleAccountBookDAO() {
-		try {
-			Class.forName("oracle.jdbc.driver.OracleDriver");
-			String url = "jdbc:oracle:thin:@172.16.15.55:1521:xe";
-			conn = DriverManager.getConnection(url,"system","1234");
-				
-			if(conn==null) {
-				System.out.println("DB 연결 실패");
-				System.out.println("시스템 종료");
-			}
-			System.out.println("DB 연결 성공");
-		}catch(Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
-	@Override
-	public void view_date(String date, String type) {
-		List<AccountBook> list = new ArrayList<>(); // 여러 건을 담을 리스트
-	    String sql = "select * from accountbook where indate = ? and type = ?";
-	    PreparedStatement ps = null;
-	    ResultSet result = null;
+public class OracleAccountBookDAO implements AccountBookDAO {
 
-	    try {
-	        ps = conn.prepareStatement(sql);
-	        ps.setString(1, date);
-	        ps.setString(2, type);
-	        result = ps.executeQuery();
-	        
-	        while(result.next()) {
-	            int id = result.getInt("id");
-	            int amount = result.getInt("amount");
-	            String category = result.getString("category");
-	            
-	            // 리스트에 추가
-	            list.add(new AccountBook(id, type, amount, category, date));
-	            
-	            System.out.println("id : " + id + "\t|type : " + type + "\t|amount : " + amount + "\t|cotegoty : " + category + "\t|date : " + date);
-	        }
+    Connection conn;
+    private int i = 1;
 
-	        if(list.isEmpty()) {
-	            System.out.println(date + " " + type + " 정보가 없습니다.");
-	        }
-	        
-	    } catch(Exception e) { 
-	        e.printStackTrace(); 
-	    } finally {
-	        // 리소스 해제는 반드시 마지막에! (자바 7 이상이면 try-with-resources 권장)
-	        try { if(result != null) result.close(); } catch(Exception e) {}
-	        try { if(ps != null) ps.close(); } catch(Exception e) {}
-	    }
-	}
+    public OracleAccountBookDAO() {
+        try {
+            Class.forName("oracle.jdbc.driver.OracleDriver");
+            String url = "jdbc:oracle:thin:@172.16.15.55:1521:xe";
+            conn = DriverManager.getConnection(url, "system", "1234");
 
+            if (conn == null) {
+                System.out.println("DB 연결 실패");
+            } else {
+                System.out.println("DB 연결 성공");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
-	@Override
-	public void view_category(String category, String type ) {
-		List<AccountBook> list = new ArrayList<>(); // 여러 데이터를 담을 바구니
-	    String sql = "select * from accountbook where category = ? and type = ?";
-	    PreparedStatement ps = null;
-	    ResultSet result = null;
+    @Override
+    public void view_date(String date, String type) {
+        List<AccountBook> list = new ArrayList<>();
+        String sql = "select * from accountbook where indate = ? and type = ?";
+        PreparedStatement ps = null;
+        ResultSet result = null;
 
-	    try {
-	        ps = conn.prepareStatement(sql);
-	        ps.setString(1, category);
-	        ps.setString(2, type);
-	        result = ps.executeQuery();
-	        
-	        while(result.next()) {
-	            int id = result.getInt("id");
-	            int amount = result.getInt("amount");
-	            String date = result.getString("indate");
-	            
-	            // 조회된 데이터를 리스트에 계속 추가
-	            list.add(new AccountBook(id, type, amount, category, date));
-	            System.out.println("id : " + id + "\t|type : " + type + "\t|amount : " + amount + "\t|cotegoty : " + category + "\t|date : " + date);
-	        }
+        try {
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, date);
+            ps.setString(2, type);
+            result = ps.executeQuery();
 
-	        if(list.isEmpty()) {
-	            System.out.println(category + " 카테고리에 해당되는 정보가 없슴다.");
-	        }
-	        
-	    } catch(Exception e) { 
-	        e.printStackTrace(); 
-	    } finally {
-	        // 통로 닫기는 '반드시' 작업이 다 끝난 여기서!
-	        try { if(result != null) result.close(); } catch(Exception e) {}
-	        try { if(ps != null) ps.close(); } catch(Exception e) {}
-	    }
-	}
+            while (result.next()) {
+                int id = result.getInt("id");
+                int amount = result.getInt("amount");
+                String category = result.getString("category");
+                list.add(new AccountBook(id, type, amount, category, date));
+                System.out.println("id : " + id + "\t|type : " + type + "\t|amount : " + amount + "\t|category : " + category + "\t|date : " + date);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try { if (result != null) result.close(); } catch (Exception e) {}
+            try { if (ps != null) ps.close(); } catch (Exception e) {}
+        }
+    }
 
-	@Override
-	public int insert(AccountBook ab) {
-		try {
-			String sql = "insert into accountbook values(?,?,?,?,?)";
-			PreparedStatement ps = conn.prepareStatement(sql);
-			System.out.println(ps);
-			ps.setInt(1, i);
-			ps.setString(2, ab.getType());
-			ps.setInt(3, ab.getAmount());
-			ps.setString(4, ab.getCategory());
-			ps.setString(5, ab.getDate());
-			ps.executeUpdate();
-			ps.close();
-			i++;
-			return 0;
-		} catch (Exception e) {
-			e.printStackTrace();
-			return 0;
-		}
-	}
+    @Override
+    public void view_category(String category, String type) {
+        List<AccountBook> list = new ArrayList<>();
+        String sql = "select * from accountbook where category = ? and type = ?";
+        PreparedStatement ps = null;
+        ResultSet result = null;
+
+        try {
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, category);
+            ps.setString(2, type);
+            result = ps.executeQuery();
+
+            while (result.next()) {
+                int id = result.getInt("id");
+                int amount = result.getInt("amount");
+                String date = result.getString("indate");
+                list.add(new AccountBook(id, type, amount, category, date));
+                System.out.println("id : " + id + "\t|type : " + type + "\t|amount : " + amount + "\t|category : " + category + "\t|date : " + date);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try { if (result != null) result.close(); } catch (Exception e) {}
+            try { if (ps != null) ps.close(); } catch (Exception e) {}
+        }
+    }
+
+    @Override
+    public int insert(AccountBook ab) {
+        try {
+            String sql = "insert into accountbook values(?,?,?,?,?)";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, i);
+            ps.setString(2, ab.getType());
+            ps.setInt(3, ab.getAmount());
+            ps.setString(4, ab.getCategory());
+            ps.setString(5, ab.getDate());
+            int result = ps.executeUpdate();
+            ps.close();
+            i++;
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    } // <- 여기서 insert 메서드가 끝나야 합니다.
+
+    @Override
+    public AccountBook findById(int id) {
+        try {
+            String sql = "SELECT * FROM AccountBook WHERE id = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                AccountBook ab = new AccountBook();
+                ab.setId(rs.getInt("id"));
+                ab.setType(rs.getString("type"));
+                ab.setAmount(rs.getInt("amount"));
+                ab.setCategory(rs.getString("category"));
+                ab.setDate(rs.getString("indate")); // 컬럼명 확인 필요 (indate?)
+                return ab;
+            }
+            return null;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public int delete(int id) {
+        String sql = "DELETE FROM AccountBook WHERE id = ?";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            return ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
 }
