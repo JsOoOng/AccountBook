@@ -10,7 +10,7 @@ import java.util.List;
 public class OracleAccountBookDAO implements AccountBookDAO{
 	
 	Connection conn;
-	
+	private int i = 1;
 	public OracleAccountBookDAO() {
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
@@ -99,5 +99,26 @@ public class OracleAccountBookDAO implements AccountBookDAO{
 	        try { if(result != null) result.close(); } catch(Exception e) {}
 	        try { if(ps != null) ps.close(); } catch(Exception e) {}
 	    }
+	}
+
+	@Override
+	public int insert(AccountBook ab) {
+		try {
+			String sql = "insert into accountbook values(?,?,?,?,?)";
+			PreparedStatement ps = conn.prepareStatement(sql);
+			System.out.println(ps);
+			ps.setInt(1, i);
+			ps.setString(2, ab.getType());
+			ps.setInt(3, ab.getAmount());
+			ps.setString(4, ab.getCategory());
+			ps.setString(5, ab.getDate());
+			ps.executeUpdate();
+			ps.close();
+			i++;
+			return 0;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
 	}
 }
