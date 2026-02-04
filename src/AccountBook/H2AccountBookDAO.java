@@ -253,12 +253,5 @@ public class H2AccountBookDAO implements AccountBookDAO{
 			return -1;
 		}
 	}
-
-	@Override
-	public void Idcleanner() {
-		// TODO Auto-generated method stub
-		
-	}
-
-   
+  
 }

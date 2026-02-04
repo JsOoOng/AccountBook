@@ -11,8 +11,6 @@ import java.util.List;
 public class OracleAccountBookDAO implements AccountBookDAO {
 
     Connection conn;
-    private int i;
-
     public OracleAccountBookDAO() {
         try {
             Class.forName("oracle.jdbc.driver.OracleDriver");
@@ -75,7 +73,7 @@ public class OracleAccountBookDAO implements AccountBookDAO {
                 int amount = result.getInt("amount");
                 String date = result.getString("indate");
                 list.add(new AccountBook(id, type, amount, category, date));
-                System.out.println("id : " + id + "\t|type : " + type + "\t|amount : " + amount + "\t|category : " + category + "\t|date : " + date);
+                System.out.println("id : " + id + "\t|타입 : " + type + "\t|금액 : " + amount + "\t|카테고리 : " + category + "\t|날짜 : " + date);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -88,14 +86,13 @@ public class OracleAccountBookDAO implements AccountBookDAO {
     @Override
     public int insert(AccountBook ab) {
         try {
-        	i = count() + 1;
-            String sql = "insert into accountbook values(?,?,?,?,?)";
+        	
+            String sql = "insert into accountbook values(seq_account_id.NEXTVAL,?,?,?,?)";
             PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setInt(1, i);
-            ps.setString(2, ab.getType());
-            ps.setInt(3, ab.getAmount());
-            ps.setString(4, ab.getCategory());
-            ps.setString(5, ab.getDate());
+            ps.setString(1, ab.getType());
+            ps.setInt(2, ab.getAmount());
+            ps.setString(3, ab.getCategory());
+            ps.setString(4, ab.getDate());
             int result = ps.executeUpdate();
             ps.close();
           
@@ -228,23 +225,4 @@ public class OracleAccountBookDAO implements AccountBookDAO {
 		}
 	}
 
-	@Override
-	public void Idcleanner() {
-		int i = 1;
-		try {
-			for(AccountBook a : findAll()) {
-				if(a.getId()!=i) {
-					String sql = "update accountbook set id=? where id=?";
-					PreparedStatement ps = conn.prepareStatement(sql);
-					ps.setInt(1, i);
-					ps.setInt(2, a.getId());
-					ps.executeUpdate();
-					ps.close();
-				}
-				i++;
-			}
-		}catch(Exception e) {
-			e.printStackTrace();
-		}
-	}
 }
