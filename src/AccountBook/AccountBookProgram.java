@@ -35,21 +35,21 @@ public class AccountBookProgram {
 	//메뉴
 	public int menu() {
 		System.out.println("+===================+");
-		System.out.println("|    가계부 관리	    |");
+		System.out.println("|     가계부 관리	    |");
 		System.out.println("+===================+");
-		System.out.println("| 1. 가계부 입력	    |");
-		System.out.println("| 2. 가계부 전체출력    |");
-		System.out.println("| 3. 가계부 찾기	    |");
-		System.out.println("| 4. 가계부 수정	    |");
-		System.out.println("| 5. 가계부 삭제	    |");
-		System.out.println("| 0. 프로그램 종료	    |");
+		System.out.println("|  1. 가계부 입력	    |");
+		System.out.println("|  2. 가계부 전체출력  |");
+		System.out.println("|  3. 가계부 찾기	    |");
+		System.out.println("|  4. 가계부 수정	    |");
+		System.out.println("|  5. 가계부 삭제	    |");
+		System.out.println("|  0. 프로그램 종료    |");
 		System.out.println("+===================+");
 		return scan.nextInt();
 	} //menu end
 	
 	//입력
 	public void insert() {
-		am.Idcleanner();
+	
 		System.out.println("가계부에 입력할 타입(수입 / 지출) : ");
 		type = scan.next();
 		System.out.println("가계부에 입력할 금액 : ");
@@ -63,7 +63,7 @@ public class AccountBookProgram {
 	
 	//전체출력
 	public void views() throws IOException {
-		am.Idcleanner();
+		
 		am.findAll();
 		System.in.read();
 	} //views end

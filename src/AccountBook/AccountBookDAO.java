@@ -12,7 +12,6 @@ public interface AccountBookDAO {
     public int update(int id, AccountBook ab);
     public List<AccountBook> findAll();
 	public int count();
-	public void Idcleanner();
 }
 
 

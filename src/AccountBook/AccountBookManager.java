@@ -1,5 +1,6 @@
 package AccountBook;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class AccountBookManager {
@@ -18,12 +19,24 @@ public class AccountBookManager {
 	}
 	
 	public void insert(String type, int amount, String category, String date) {
-		int id = dao.count()+1;
-		dao.insert(new AccountBook(id, type, amount, category, date));
+		dao.insert(new AccountBook(0, type, amount, category, date));
 	}
 	
 	public void findAll() {
-		for(AccountBook a : dao.findAll()) System.out.println(a);
+		
+		List<AccountBook> list = dao.findAll();
+	    System.out.println("\n+------+------+--------+----------+------------+");
+	    System.out.println("| 순번  | ID   | 타입    | 금액      | 카테고리     | 날짜");
+	    System.out.println("+------+------+--------+----------+------------+");
+	    
+	    int no = 1; // 사용자가 보기 편한 단순 순번
+	    for(AccountBook a : list) {
+	        // %-4d 등 형식을 지정하면 줄 맞춤이 훨씬 깔끔해집니다.
+	        System.out.printf("| %-4d | %-4d | %-5s | %-8d | %-9s | %s\n", 
+	                          no++, a.getId(), a.getType(), a.getAmount(), a.getCategory(), a.getDate());
+	    }
+	    System.out.println("+------+------+--------+----------+------------+");
+	    System.out.println("※ 수정/삭제 시에는 오른쪽의 'ID' 번호를 입력하세요.");
 	}
 
 	public void view(String select, String type) {
@@ -53,9 +66,5 @@ public class AccountBookManager {
 
 	public void delete(int id) {
 		dao.delete(id);
-	}
-	
-	public void Idcleanner() {
-		dao.Idcleanner();
 	}
 }
