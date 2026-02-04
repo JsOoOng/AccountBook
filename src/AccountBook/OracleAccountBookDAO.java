@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -171,35 +170,37 @@ public class OracleAccountBookDAO implements AccountBookDAO {
 
 	@Override
 	public List<AccountBook> findAll() {
-		try {
+		List<AccountBook> list = new ArrayList<>();
+	    // 중요: 입력 순서대로 계산해야 잔액이 맞으므로 ORDER BY id ASC 필수!
+	    String sql = "SELECT * FROM accountbook ORDER BY id ASC"; 
+	    
+	    try (PreparedStatement ps = conn.prepareStatement(sql);
+	         ResultSet rs = ps.executeQuery()) {
+	        
+	        int currentBalance = 0; // 누적 잔액을 계산할 변수
 
-	    	String sql = "select * from accountbook";
-	    	PreparedStatement ps = conn.prepareStatement(sql);
+	        while (rs.next()) {
+	            int id = rs.getInt("id");
+	            String type = rs.getString("type");
+	            int amount = rs.getInt("amount");
+	            String category = rs.getString("category");
+	            String date = rs.getString("indate");
 
-	    	ResultSet rs = ps.executeQuery();
-	    	
-	    	List<AccountBook> list = new ArrayList<AccountBook>(); //빈리스트 만들기
-	    	while(rs.next()) {
-	    		
-	    		
-	    		
-	    		int id = rs.getInt("id");
-	    		String type = rs.getString("type");
-	    		int amount = rs.getInt("amount");
-	    		String category = rs.getString("category");
-	    		String date = rs.getString("indate");
-	    		
-	    		AccountBook ab= new AccountBook(id, type, amount, category, date);
-	    		list.add(ab);
-	    	}
-	    	rs.close();
-	    	ps.close();
-	    	return list;
-	    	
-	    	}catch (Exception e) {
-	    		e.printStackTrace();
-	    		return null;
-	    	}
+	            // 수입이면 더하고, 지출이면 뺌
+	            if (type.equals("수입")) {
+	                currentBalance += amount;
+	            } else if (type.equals("지출")) {
+	                currentBalance -= amount;
+	            }
+
+	            AccountBook ab = new AccountBook(id, type, amount, category, date);
+	            ab.setBalance(currentBalance); // 계산된 잔액을 객체에 저장
+	            list.add(ab);
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    return list;
 	}
 	
 	@Override
