@@ -243,6 +243,29 @@ public class H2AccountBookDAO implements AccountBookDAO{
 	    		return null;
 	    	}
 	}
+	
+	@Override
+	public int count() {
+		try {
+			String sql = "select count(*) as cnt from phonebook";
+			PreparedStatement ps = conn.prepareStatement(sql);
+			
+			ResultSet result = ps.executeQuery();
+			
+			if(result.next()) {
+				int cnt = result.getInt("cnt");
+				result.close(); ps.close();
+				return cnt;
+			}
+			result.close();
+			ps.close();
+			return -1;
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+			return -1;
+		}
+	}
 
    
 }

@@ -11,6 +11,7 @@ public interface AccountBookDAO {
     public int delete(int id);	
     public int update(AccountBook ab);
     public List<AccountBook> findAll();
+	public int count();
 }
 
 

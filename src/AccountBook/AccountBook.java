@@ -65,6 +65,12 @@ public class AccountBook {
 		this.category = category;
 		this.date = date;
 	}
+	public AccountBook(String type, int amount, String category, String date) {
+		this.amount = amount;
+		this.type = type;
+		this.category = category;
+		this.date = date;
+	}
 	@Override
 	public String toString() {
 		return "AccountBook [id=" + id +  ", type=" + type + ", amount=" + amount +
