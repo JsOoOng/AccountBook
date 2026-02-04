@@ -25,6 +25,7 @@ public class OracleAccountBookDAO implements AccountBookDAO {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            System.out.println("test fail!");
         }
     }
 
