@@ -39,14 +39,16 @@ public class OracleAccountBookDAO implements AccountBookDAO {
             ps.setString(1, date);
             ps.setString(2, type);
             result = ps.executeQuery();
-
+            int balance = 0;
             while (result.next()) {
                 int id = result.getInt("id");
                 int amount = result.getInt("amount");
                 String category = result.getString("category");
                 list.add(new AccountBook(id, type, amount, category, date));
                 System.out.println("id : " + id + "\t|type : " + type + "\t|amount : " + amount + "\t|category : " + category + "\t|date : " + date);
+                balance = balance + amount;
             }
+            System.out.println("합계금액 : " + balance);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -67,14 +69,16 @@ public class OracleAccountBookDAO implements AccountBookDAO {
             ps.setString(1, category);
             ps.setString(2, type);
             result = ps.executeQuery();
-
+            int balance = 0;
             while (result.next()) {
                 int id = result.getInt("id");
                 int amount = result.getInt("amount");
                 String date = result.getString("indate");
                 list.add(new AccountBook(id, type, amount, category, date));
                 System.out.println("id : " + id + "\t|타입 : " + type + "\t|금액 : " + amount + "\t|카테고리 : " + category + "\t|날짜 : " + date );
+                balance = balance + amount;
             }
+            System.out.println("합계금액 : " + balance);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
