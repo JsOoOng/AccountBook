@@ -91,16 +91,16 @@ public class AccountBookProgram {
 		}
 		
 		if(am.isExist(id)) {
-			System.out.println("변경할 타입을 입력하세요[변경사항이 없으면 enter]");
+			System.out.println("변경할 타입(수입 / 지출)을 입력하세요[변경사항이 없으면 enter]");
 			type=scan.nextLine();				 
 			System.out.println("변경할 금액을 입력하세요[변경사항이 없으면 0]");
 			amount=scan.nextInt();		
 			if(scan.hasNextLine()) {
 				scan.nextLine();
 			}
-			System.out.println("변경할 카테고리를 입력하세요[변경사항이 없으면 enter]");
+			System.out.println("변경할 카테고리(식사 여가 교통 쇼핑 의료 기타)를 입력하세요[변경사항이 없으면 enter]");
 			category=scan.nextLine();
-			System.out.println("변경할 날짜를 입력하세요[변경사항이 없으면 enter]");
+			System.out.println("변경할 날짜(yyyy-mm-dd)를 입력하세요[변경사항이 없으면 enter]");
 			date=scan.nextLine();
 			
 			am.update(id, new AccountBook(type, amount, category, date));
