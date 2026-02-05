@@ -36,6 +36,17 @@ public class AccountBookManager {
                     a.getCategory(), a.getDate(), a.getBalance());
 	    }
 	    System.out.println("+------+------+-------+----------+------------+------------+------------+");
+	    int i = 0;
+    	int j = 0;
+	    for(AccountBook a : list) {
+	    	if(a.getType().equals("지출")) {
+	    		i=i+a.getAmount();
+	    	}else if(a.getType().equals("수입")){
+	    		j=j+a.getAmount();
+	    	}
+	    }
+	    System.out.println("총 수입금: +"+j+"원");
+	    System.out.println("총 지출금: -"+i+"원");
 	    System.out.println("※ 수정/삭제 시에는 오른쪽의 'ID' 번호를 입력하세요.");
 	}
 
