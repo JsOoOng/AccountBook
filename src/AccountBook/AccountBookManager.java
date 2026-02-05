@@ -36,7 +36,7 @@ public class AccountBookManager {
                     no++, a.getId(), a.getType(), a.getAmount(), 
                     a.getCategory(), a.getDate(), a.getBalance());
 	    }
-	    System.out.println("+------+------+--------+----------+-----------+------------+------------+");
+	    System.out.println("+------+------+-------+----------+------------+------------+------------+");
 	    System.out.println("※ 수정/삭제 시에는 오른쪽의 'ID' 번호를 입력하세요.");
 	}
 
