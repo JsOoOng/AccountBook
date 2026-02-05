@@ -25,17 +25,18 @@ public class AccountBookManager {
 	public void findAll() {
 		
 		List<AccountBook> list = dao.findAll();
-	    System.out.println("\n+------+------+--------+----------+------------+");
-	    System.out.println("| 순번  | ID   | 타입    | 금액      | 카테고리     | 날짜");
-	    System.out.println("+------+------+--------+----------+------------+");
+	    System.out.println("\n+------+------+-------+----------+------------+------------+------------+");
+	    System.out.println("| 순번  | ID   | 타입   | 금액      | 카테고리     | 날짜\t   | 잔액\t|");
+	    System.out.println("+------+------+-------+----------+------------+------------+------------+");
 	    
 	    int no = 1; // 사용자가 보기 편한 단순 순번
 	    for(AccountBook a : list) {
 	        // %-4d 등 형식을 지정하면 줄 맞춤이 훨씬 깔끔해집니다.
-	        System.out.printf("| %-4d | %-4d | %-5s | %-8d | %-9s | %s\n", 
-	                          no++, a.getId(), a.getType(), a.getAmount(), a.getCategory(), a.getDate());
+	    	System.out.printf("| %-4d | %-4d | %-4s | %-8d | %-9s | %-10s | %-11d|\n", 
+                    no++, a.getId(), a.getType(), a.getAmount(), 
+                    a.getCategory(), a.getDate(), a.getBalance());
 	    }
-	    System.out.println("+------+------+--------+----------+------------+");
+	    System.out.println("+------+------+--------+----------+-----------+------------+------------+");
 	    System.out.println("※ 수정/삭제 시에는 오른쪽의 'ID' 번호를 입력하세요.");
 	}
 

@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +14,7 @@ public class OracleAccountBookDAO implements AccountBookDAO {
     public OracleAccountBookDAO() {
         try {
             Class.forName("oracle.jdbc.driver.OracleDriver");
-            String url = "jdbc:oracle:thin:@172.16.15.53:1521:xe";
+            String url = "jdbc:oracle:thin:@172.16.15.55:1521:xe";
             conn = DriverManager.getConnection(url, "system", "1234");
 
             if (conn == null) {
@@ -72,7 +73,7 @@ public class OracleAccountBookDAO implements AccountBookDAO {
                 int amount = result.getInt("amount");
                 String date = result.getString("indate");
                 list.add(new AccountBook(id, type, amount, category, date));
-                System.out.println("id : " + id + "\t|타입 : " + type + "\t|금액 : " + amount + "\t|카테고리 : " + category + "\t|날짜 : " + date);
+                System.out.println("id : " + id + "\t|타입 : " + type + "\t|금액 : " + amount + "\t|카테고리 : " + category + "\t|날짜 : " + date );
             }
         } catch (Exception e) {
             e.printStackTrace();
