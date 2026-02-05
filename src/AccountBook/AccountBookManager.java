@@ -28,7 +28,7 @@ public class AccountBookManager {
 	    System.out.println("\n+------+------+-------+----------+------------+------------+------------+");
 	    System.out.println("| 순번  | ID   | 타입   | 금액      | 카테고리     | 날짜\t   | 잔액\t|");
 	    System.out.println("+------+------+-------+----------+------------+------------+------------+");
-	    
+	    System.out.println("박지성 개바보");
 	    int no = 1; // 사용자가 보기 편한 단순 순번
 	    for(AccountBook a : list) {
 	        // %-4d 등 형식을 지정하면 줄 맞춤이 훨씬 깔끔해집니다.
