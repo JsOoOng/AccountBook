@@ -38,7 +38,7 @@ public class AccountBookProgram {
 		System.out.println("|     가계부 관리	    |");
 		System.out.println("+===================+");
 		System.out.println("|  1. 가계부 입력	    |");
-		System.out.println("|  2. 가계부 전체출력  |");
+		System.out.println("|  2. 가계부 전체	    |");
 		System.out.println("|  3. 가계부 찾기	    |");
 		System.out.println("|  4. 가계부 수정	    |");
 		System.out.println("|  5. 가계부 삭제	    |");
