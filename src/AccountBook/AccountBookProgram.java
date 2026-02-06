@@ -11,8 +11,10 @@ public class AccountBookProgram {
 	int amount; //금액 : 사용액 
 	int balance; //잔여액 : 남은 돈
 	String type; //수입 또는 지출 
+	int itype; //입력할때의 타입
 	String category; //분류 : 식사 여가 교통 쇼핑 의료 기타
 	String date;
+	String select;
 	
 	public AccountBookProgram(AccountBookDAO dao) throws IOException {
 		am = new AccountBookManager(dao);
@@ -50,10 +52,19 @@ public class AccountBookProgram {
 	//입력
 	public void insert() {
 	
-		System.out.println("가계부에 입력할 타입(수입 / 지출) : ");
-		type = scan.next();
+		System.out.println("가계부에 입력할 타입(1.수입 / 2.지출) : ");
+		itype = scan.nextInt();
+		scan.nextLine();
+		switch(itype) {
+			case 1: type="수입"; break;
+			case 2: type="지출"; break;
+			default:
+		        System.out.println("타입은 1 또는 2만 입력하세요.");
+		        return;
+		}
 		System.out.println("가계부에 입력할 금액 : ");
 		amount = scan.nextInt();
+		scan.nextLine();
 		System.out.println("카테고리를 입력하세요(식사 여가 교통 쇼핑 의료 기타) : ");
 		category = scan.next();
 		System.out.println("날짜를 입력하세요(yyyy-mm-dd) : ");
@@ -69,12 +80,29 @@ public class AccountBookProgram {
 	} //views end
 	
 	//선택출력
-	private void view() {
-		System.out.println("찾을 방법을 선택하세요 (날짜 / 카테고리): ");
-		String select = scan.next();
-		System.out.println("찾을 타입을 선택하세요 (수입 / 지출): ");
-		String type = scan.next();
+	private void view() throws IOException {
+		System.out.println("찾을 방법을 선택하세요 (1.날짜 / 2.카테고리): ");
+		int iselect = scan.nextInt();
+		switch(iselect) {
+		case 1: select="날짜"; break;
+		case 2: select="카테고리"; break;
+		default:
+	        System.out.println("타입은 1 또는 2만 입력하세요.");
+	        return;
+		}
+		
+		System.out.println("찾을 타입을 선택하세요 (1.수입 / 2.지출): ");
+		int itype = scan.nextInt();
+		switch(itype) {
+		case 1: type="수입"; break;
+		case 2: type="지출"; break;
+		default:
+	        System.out.println("타입은 1 또는 2만 입력하세요.");
+	        return;
+		}
 		am.view(select, type);
+		System.in.read();
+		
 		
 	} //view end
 
@@ -85,16 +113,24 @@ public class AccountBookProgram {
 		}
 		System.out.println("수정할 가계부의 아이디를 입력하세요 : ");
 		id=scan.nextInt(); 
-		System.out.println("test");
 		if(scan.hasNextLine()) {
 			scan.nextLine();
 		}
 		
 		if(am.isExist(id)) {
-			System.out.println("변경할 타입(수입 / 지출)을 입력하세요[변경사항이 없으면 enter]");
-			type=scan.nextLine();				 
+			System.out.println("변경할 타입(1.수입 / 2.지출)을 입력하세요[변경사항이 없으면 0]");
+			int itype=scan.nextInt();
+			switch(itype) {
+			case 0: type=""; break;
+			case 1: type="수입"; break;
+			case 2: type="지출"; break;
+			default:
+		        System.out.println("타입은 0 또는 1 또는 2만 입력하세요.");
+		        return;
+			}
+			
 			System.out.println("변경할 금액을 입력하세요[변경사항이 없으면 0]");
-			amount=scan.nextInt();		
+			amount=scan.nextInt();	
 			if(scan.hasNextLine()) {
 				scan.nextLine();
 			}
